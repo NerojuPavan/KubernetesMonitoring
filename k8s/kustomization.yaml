@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Only the application stack is managed here.
+# The monitoring/ folders are intentionally excluded.
+resources:
+- namespace.yaml
+- pvc.yaml
+- postgres.yaml
+- redis.yaml
+- app/config.yaml
+- app/secret.yaml
+- app/app.yaml
+
+# Image tags are managed here. CI bumps newTag on every push to main,
+# which gives ArgoCD an immutable, traceable image to roll out.
+images:
+  - name: pavankumar5/test_app
+    newTag: latest
